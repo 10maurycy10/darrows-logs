@@ -75,7 +75,7 @@ setInterval(() => {
 
 wss.on('connection', (socket, req) => {
 	const clientId = createId();
-	const ip = hash(String(req.headers['x-forwarded-for'] || req.connection.remoteAddress));
+	const ip = (String(req.headers['x-forwarded-for'] || req.connection.remoteAddress));
 	if (reachedIpLimit(
 		Object.keys(clients).map((id) => clients[id]._ip),
 		ip, ipLimit)) {
@@ -250,6 +250,7 @@ function newMessage(obj, socket, clientId) {
 	}
 	if (obj.chat != undefined) {
 		let writeMessage = true;
+        console.warn(`${clients[clientId]._ip} sent ${obj.chat}`)
 		if (players[clientId] && chatTest(obj.chat)) {
 			if (obj.chat.slice(0, 5) == "/name") {
 				let newName = obj.chat.slice(6);
